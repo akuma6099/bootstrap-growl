@@ -6,16 +6,28 @@
   $.bootstrapGrowl = function(message, options) {
     var $alert, css, offsetAmount;
     options = $.extend({}, $.bootstrapGrowl.default_options, options);
+
+    //Create initial alert <div>
     $alert = $("<div>");
+        
+    //Add Bootstrap 5 classes for alert type
     $alert.attr("class", "bootstrap-growl alert");
+    $alert.attr("role", "alert");
+
     if (options.type) {
       $alert.addClass("alert-" + options.type);
     }
+
     if (options.allow_dismiss) {
-      $alert.addClass("alert-dismissible");
-      $alert.append("<button  class=\"close\" data-dismiss=\"alert\" type=\"button\"><span aria-hidden=\"true\">&#215;</span><span class=\"sr-only\">Close</span></button>");
+      $alert.addClass("alert-dismissible show shadow");
+      $alert.append("<button class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\" type=\"button\"></button>");
+    }else{
+      $alert.addClass("show shadow");
     }
-    $alert.append(message);
+    
+    //Append message to <span>
+    $alert.append($("<span>").append(message));
+
     if (options.top_offset) {
       options.offset = {
         from: "top",
@@ -51,7 +63,8 @@
       default:
         $alert.css("right", "20px");
     }
-    $alert.fadeIn();
+
+    $alert.fadeIn("fast");
     if (options.delay > 0) {
       $alert.delay(options.delay).fadeOut(function() {
         return $(this).alert("close");
